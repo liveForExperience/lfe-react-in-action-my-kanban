@@ -1,38 +1,110 @@
 .App {
-  text-align: center;
+  display: flex; /* 使用 flexbox 布局，方便排列子元素 */
+  flex-direction: column; /* 子元素垂直排列（列布局） */
+  gap: 1rem; /* 子元素之间的间距为 1rem */
+  height: 100vh; /* 整个应用高度为视口高度的 100% */
+  text-align: center; /* 文本居中对齐 */
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  height: 80%; /* Logo 的高度为父容器的 80% */
+  pointer-events: none; /* 禁止鼠标事件，例如点击或悬停 */
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* 如果用户没有偏好减少动画，则给 .App-logo 添加动画 */
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    animation: App-logo-spin infinite 20s linear; /* 无限旋转动画，20秒一圈，线性速度 */
   }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  flex: 1; /* 占据父容器剩余的可用空间 */
+  margin: 1rem 1rem 0; /* 外边距，顶部为 0，左右 1rem */
+  border-radius: 1rem; /* 边角圆滑，半径 1rem */
+  background-color: #282c34; /* 背景色为深色调 #282c34 */
+  min-height: 5rem; /* 最小高度为 5rem */
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: row-reverse; /* 子元素水平排列并反向排列 */
+  align-items: center; /* 垂直居中对齐子元素 */
+  justify-content: center; /* 水平居中对齐子元素 */
+  font-size: calc(10px + 2vmin); /* 字体大小根据视口宽度自适应 */
+  color: white; /* 文本颜色为白色 */
+}
+
+.kanban-board {
+  flex: 10; /* 占据父容器较大的空间，类似于 10:1 的比例 */
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: row; /* 子元素水平排列 */
+  gap: 1rem; /* 子元素之间的间距为 1rem */
+  margin: 0 1rem 1rem; /* 外边距，左右和底部为 1rem，顶部为 0 */
+}
+
+.kanban-column {
+  flex: 1 1; /* 每个列根据需要缩放，且在父容器中等分 */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border: 1px solid gray; /* 灰色边框，宽度为 1px */
+  border-radius: 1rem; /* 圆角边框，半径为 1rem */
 }
 
-.App-link {
-  color: #61dafb;
+.kanban-column > h2 {
+  margin: 0.6rem, 0.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid gray;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.kanban-column > ul {
+  flex: 1;
+  flex-basis: 0;
+  margin: 1rem;
+  padding: 0;
+  overflow: auto;
+}
+
+.kanban-column > h2 > button {
+  float: right;
+  margin-top: 0.2rem;
+  padding: 0.2rem 0.5rem;
+  border: 0;
+  border-radius: 1rem;
+  height: 1.8rem;
+  line-height: 1rem;
+  font-size: 1rem;
+}
+    
+.card-title > input[type="text"] {
+  width: 80%;
+}
+
+.column-todo {
+  background-color: #C9AF97;
+}
+
+.column-ongoing {
+  background-color: #FFE799;
+}
+
+.column-done {
+  background-color: #C0E8BA;
+}
+
+.kanban-card {
+  margin-bottom: 1rem; 
+  padding: 0.6rem 1rem; 
+  border: 1px solid gray; 
+  border-radius: 1rem; 
+  list-style: none; 
+  background-color: rgba(255, 255, 255, 0.4); 
+  text-align: left;
+}
+
+.card-title {
+  min-height: 3rem;
+}
+
+.card-status {
+  text-align: right;
+  font-size: 0.8rem;
+  color: #333
 }
