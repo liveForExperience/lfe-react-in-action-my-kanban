@@ -1,12 +1,97 @@
+/** @jsxImportSource @emotion/react */
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useState } from "react";
+import { css } from "@emotion/react";
 
-const KanbanCard = ({ key, title, status }) => {
+const COLUMN_BG_COLORS = {
+  todo: '#C9AF97',
+  ongoing: '#FFE799',
+  done: '#C0E8BA'
+}
+
+const kanbanCardStyles = css`
+  margin-bottom: 1rem; 
+  padding: 0.6rem 1rem; 
+  border: 1px solid gray; 
+  border-radius: 1rem; 
+  list-style: none; 
+  background-color: rgba(255, 255, 255, 0.4); 
+  text-align: left;
+
+  &:hover {
+    box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2), inset 0 1px #fff;
+  }
+`;
+
+const kanbanCardTitleStyles = css`
+  min-height: 3rem;
+`;
+
+const KanbanBoard = ({ children }) => (
+  <main
+    css={css`
+      flex: 10; /* 占据父容器较大的空间，类似于 10:1 的比例 */
+      display: flex; /* 使用 flex 布局 */
+      flex-direction: row; /* 子元素水平排列 */
+      gap: 1rem; /* 子元素之间的间距为 1rem */
+      margin: 0 1rem 1rem; /* 外边距，左右和底部为 1rem，顶部为 0 */
+    `}
+  >
+    {children}
+  </main>
+);
+
+const KanbanColumn = ({ children, bgColor, title }) => {
   return (
-    <li className="kanban-card">
-      <div className="card-title">{title}</div>
-      <div className="card-status">{status}</div>
+    <section css={css`
+      flex: 1 1; /* 每个列根据需要缩放，且在父容器中等分 */
+      display: flex;
+      flex-direction: column;
+      border: 1px solid gray; /* 灰色边框，宽度为 1px */
+      border-radius: 1rem; /* 圆角边框，半径为 1rem */
+      background-color: ${bgColor};
+
+      & > h2 {
+        margin: 0.6rem, 0.1rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid gray;
+
+        & > button {
+          float: right;
+          margin-top: 0.2rem;
+          padding: 0.2rem 0.5rem;
+          border: 0;
+          border-radius: 1rem;
+          height: 1.8rem;
+          line-height: 1rem;
+          font-size: 1rem;
+        }
+      }
+
+      & > ul {
+        flex: 1;
+        flex-basis: 0;
+        margin: 1rem;
+        padding: 0;
+        overflow: auto;
+      }
+    `}>
+      <h2>{title}</h2>
+      <ul>{children}</ul>
+    </section>
+  );
+};
+
+const KanbanCard = ({ title, status }) => {
+  return (
+    <li css={kanbanCardStyles}>
+      <div css={kanbanCardTitleStyles}>{title}</div>
+      <div css={css`
+          text-align: right;
+          font-size: 0.8rem;
+          color: #333
+        `}>{status}</div>
     </li>
   );
 };
@@ -25,9 +110,14 @@ const KanbanNewCard = ({ onSubmit }) => {
   };
 
   return (
-    <li className="kanban-card">
+    <li css={kanbanCardStyles}>
       <h3>添加新卡片</h3>
-      <div className="card-title">
+      <div css={css`
+          ${kanbanCardTitleStyles}
+          & > input[type="text"] {
+            width: 80%;
+          }
+        `}>
         <input
           type="text"
           value={title}
@@ -73,38 +163,34 @@ function App() {
         <h1>我的看板</h1>
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <main className="kanban-board">
-        <section className="kanban-column column-todo">
-          <h2>
-            待处理
-            <button onClick={handleAdd} disabled={showAdd}>
-              &#8853; 添加新卡片
-            </button>
-          </h2>
-          <ul>
-            {showAdd && <KanbanNewCard onSubmit={handleSubmit} />}
-            {todoList.map((item, index) => (
-              <KanbanCard index={index} {...item}></KanbanCard>
-            ))}
-          </ul>
-        </section>
-        <section className="kanban-column column-ongoing">
-          <h2>进行中</h2>
-          <ul>
-            {ongoingList.map((item, index) => (
-              <KanbanCard index={index} {...item}></KanbanCard>
-            ))}
-          </ul>
-        </section>
-        <section className="kanban-column column-done">
-          <h2>已处理</h2>
-          <ul>
-            {doneList.map((item, index) => (
-              <KanbanCard index={index} {...item}></KanbanCard>
-            ))}
-          </ul>
-        </section>
-      </main>
+      <KanbanBoard>
+        <KanbanColumn
+          bgColor={COLUMN_BG_COLORS.todo}
+          title={
+            <>
+              <span>待处理</span>
+              <button onClick={handleAdd} disabled={showAdd}>
+                &#8853; 添加新卡片
+              </button>
+            </>
+          }
+        >
+          {showAdd && <KanbanNewCard onSubmit={handleSubmit} />}
+          {todoList.map((item, index) => (
+            <KanbanCard key={index} {...item}></KanbanCard>
+          ))}
+        </KanbanColumn>
+        <KanbanColumn bgColor={COLUMN_BG_COLORS.ongoing} title="进行中">
+          {ongoingList.map((item, index) => (
+            <KanbanCard key={index} {...item}></KanbanCard>
+          ))}
+        </KanbanColumn>
+        <KanbanColumn bgColor={COLUMN_BG_COLORS.done} title="已处理">
+          {doneList.map((item, index) => (
+            <KanbanCard key={index} {...item}></KanbanCard>
+          ))}
+        </KanbanColumn>
+      </KanbanBoard>
     </div>
   );
 }
