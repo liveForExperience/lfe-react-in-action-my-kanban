@@ -1,0 +1,68 @@
+.App {
+  display: flex; /* 使用 flexbox 布局，方便排列子元素 */
+  flex-direction: column; /* 子元素垂直排列（列布局） */
+  gap: 1rem; /* 子元素之间的间距为 1rem */
+  height: 100vh; /* 整个应用高度为视口高度的 100% */
+  text-align: center; /* 文本居中对齐 */
+}
+
+.App-header > h1 > * {
+  margin-left: 1rem;
+}
+
+.App-header > h1 > label {
+  font-size: initial;
+  font-weight: initial;
+}
+
+.App-logo {
+  height: 80%; /* Logo 的高度为父容器的 80% */
+  pointer-events: none; /* 禁止鼠标事件，例如点击或悬停 */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 如果用户没有偏好减少动画，则给 .App-logo 添加动画 */
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear; /* 无限旋转动画，20秒一圈，线性速度 */
+  }
+}
+
+.App-header {
+  flex: 1; /* 占据父容器剩余的可用空间 */
+  margin: 1rem 1rem 0; /* 外边距，顶部为 0，左右 1rem */
+  border-radius: 1rem; /* 边角圆滑，半径 1rem */
+  background-color: #282c34; /* 背景色为深色调 #282c34 */
+  min-height: 5rem; /* 最小高度为 5rem */
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: row-reverse; /* 子元素水平排列并反向排列 */
+  align-items: center; /* 垂直居中对齐子元素 */
+  justify-content: center; /* 水平居中对齐子元素 */
+  font-size: calc(10px + 2vmin); /* 字体大小根据视口宽度自适应 */
+  color: white; /* 文本颜色为白色 */
+}
+    
+.card-title > input[type="text"] {
+  width: 80%;
+}
+
+.column-todo {
+  background-color: #C9AF97;
+}
+
+.column-ongoing {
+  background-color: #FFE799;
+}
+
+.column-done {
+  background-color: #C0E8BA;
+}
+
+.card-title {
+  min-height: 3rem;
+}
+
+.card-status {
+  text-align: right;
+  font-size: 0.8rem;
+  color: #333
+}
